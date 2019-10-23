@@ -2,9 +2,10 @@ import socket
 import threading
 import random
 import time
+from datetime import datetime
 from tkinter import *
 
-TCP_IP = '127.0.0.1'
+TCP_IP = '0.0.0.0'
 TCP_PORT = 54321
 
 lsClientThreads = []
@@ -32,6 +33,10 @@ class ClientThread(threading.Thread):
             recvData = self.clientSocket.recv(1024).decode()
             recvData = recvData.split()
 
+            print(self.getName(), "Received Data:", recvData)
+
+            recvData = [data.replace('b\'', '\'') for data in recvData]
+
             if len(recvData) == 0:
                 self.clientSocket.close()
 
@@ -51,7 +56,7 @@ class ClientThread(threading.Thread):
                             del dictPlayer_lsKeys[self.strUsername]
                             del dictPlayer_lsKeys[self.strUsernameOpponent]
 
-                print('Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
+                print(str(datetime.now()), 'Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
                 break
 
             elif recvData[0] == 'set_username':
@@ -62,8 +67,6 @@ class ClientThread(threading.Thread):
 
                 else:
                     self.clientSocket.send('BAD'.encode())
-
-                print('Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
 
             else:
 
@@ -175,7 +178,7 @@ class ClientThread(threading.Thread):
                 else:
                     self.clientSocket.send("Invalid message syntax!".encode())
 
-                    print('Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
+                    print(self.getName(), "Invalid message syntax!")
 
     def resetMatch(self):
         self.reset = True
@@ -191,7 +194,7 @@ class Server(threading.Thread):
             serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             serverSocket.bind((TCP_IP, TCP_PORT))
 
-            print('Server started... waiting on port ' + str(TCP_PORT))
+            print(str(datetime.now()), 'Server started... waiting on port ' + str(TCP_PORT))
 
             serverSocket.listen(10)
             (clientSocket, clientAddress) = serverSocket.accept()
@@ -200,7 +203,7 @@ class Server(threading.Thread):
 
             lsClientThreads.append(clientThread)
 
-            print('Client accepted:', clientAddress[0], ':', clientAddress[1])
+            print(str(datetime.now()), 'Client accepted:', clientAddress[0], ':', clientAddress[1])
 
             clientThread.start()
 
