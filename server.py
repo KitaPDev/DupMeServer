@@ -12,6 +12,7 @@ lsClientThreads = []
 lsPlayers = []
 dictPlayer_Opponent = {}
 dictPlayer_lsKeys = {}
+dictPlayer_StartFlag = {}
 
 root = Tk()
 text = StringVar()
@@ -55,6 +56,9 @@ class ClientThread(threading.Thread):
                         if self.strUsername in dictPlayer_lsKeys.keys():
                             del dictPlayer_lsKeys[self.strUsername]
                             del dictPlayer_lsKeys[self.strUsernameOpponent]
+
+                        if self.strUsername in dictPlayer_StartFlag.keys():
+                            del dictPlayer_StartFlag[self.strUsername]
 
                 print(str(datetime.now()), 'Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
                 break
@@ -100,6 +104,9 @@ class ClientThread(threading.Thread):
                             del dictPlayer_lsKeys[self.strUsername]
                             del dictPlayer_lsKeys[self.strUsernameOpponent]
 
+                        if self.strUsername in dictPlayer_StartFlag.keys():
+                            del dictPlayer_StartFlag[self.strUsername]
+
                 if recvData[0] == 'find_match':
                     startIndex = random.randint(0, 1)
 
@@ -113,6 +120,7 @@ class ClientThread(threading.Thread):
 
                             if startIndex == 0:
                                 strData = strData + ' start'
+                                dictPlayer_StartFlag[self.strUsername] = True
 
                             strData = strData + "\n"
                             self.clientSocket.send(strData.encode())
@@ -134,6 +142,7 @@ class ClientThread(threading.Thread):
 
                             if startIndex == 1:
                                 strData = strData + ' start'
+                                dictPlayer_StartFlag[self.strUsername] = True
 
                             strData = strData + "\n"
                             self.clientSocket.send(strData.encode())
@@ -166,7 +175,7 @@ class ClientThread(threading.Thread):
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('B')
                     self.clientSocket.send('OK'.encode())
 
-                elif recvData[0] == 'update_game':
+                elif recvData[0] == 'get_keys':
                     self.strUsernameOpponent = dictPlayer_Opponent[self.strUsername]
 
                     while True:
@@ -174,9 +183,9 @@ class ClientThread(threading.Thread):
                             strData = ''
 
                             for key in dictPlayer_lsKeys[self.strUsernameOpponent]:
-                                strData = key + " "
+                                strData = key + ' '
 
-                            strData = strData + "\n"
+                            strData = strData + '\n'
 
                             self.clientSocket.send(strData.encode())
 
