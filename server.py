@@ -115,12 +115,13 @@ class ClientThread(threading.Thread):
                     strData = str(dictPlayer_startBit[self.strUsername]) + '\n'
                     self.clientSocket.send(strData.encode())
 
-                elif recvData[0] == 'start_match':
+                elif recvData[0] == 'ready':
                     lsPlayers_ready.append(self.strUsername)
 
                     while True:
                         if self.strUsernameOpponent in lsPlayers_ready:
                             self.clientSocket.send('1\n'.encode())
+                            break
 
                 elif recvData[0] == 'C':
                     dictPlayer_key[self.strUsername] = 'C'
