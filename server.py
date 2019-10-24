@@ -40,6 +40,7 @@ class ClientThread(threading.Thread):
             if len(recvData) == 0:
                 self.clientSocket.close()
                 lsPlayers.remove(self.strUsername)
+                lsPlayers_ready.remove(self.strUsername)
                 print(str(datetime.now()), 'Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
                 break
 
