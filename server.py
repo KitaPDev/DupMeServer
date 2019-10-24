@@ -60,24 +60,28 @@ class ClientThread(threading.Thread):
                 break
 
             elif recvData[0] == 'set_username':
+
+                if len(recvData) == 1:
+                    self.clientSocket.send('BAD\n'.encode())
+
                 if recvData[1] not in lsPlayers:
                     lsPlayers.append(recvData[1])
                     self.strUsername = recvData[1]
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 else:
-                    self.clientSocket.send('BAD'.encode())
+                    self.clientSocket.send('BAD\n'.encode())
 
             else:
 
                 if len(self.strUsername) > 0:
                     if self.strUsername not in lsPlayers:
-                        self.clientSocket.send('opponent_left'.encode())
+                        self.clientSocket.send('opponent_left\n'.encode())
                         self.clientSocket.close()
                         break
 
                 if self.reset:
-                    self.clientSocket.send('RST'.encode())
+                    self.clientSocket.send('RST\n'.encode())
                     self.reset = False
 
                 if recvData[0] == 'close':
@@ -100,7 +104,7 @@ class ClientThread(threading.Thread):
                     startIndex = random.randint(0, 1)
 
                     if len(lsPlayers) < 2:
-                        self.clientSocket.send('REQ_AGAIN'.encode())
+                        self.clientSocket.send('REQ_AGAIN\n'.encode())
 
                     else:
                         if self.strUsername in dictPlayer_Opponent.keys():
@@ -110,6 +114,7 @@ class ClientThread(threading.Thread):
                             if startIndex == 0:
                                 strData = strData + ' start'
 
+                            strData = strData + "\n"
                             self.clientSocket.send(strData.encode())
 
                         else:
@@ -130,31 +135,32 @@ class ClientThread(threading.Thread):
                             if startIndex == 1:
                                 strData = strData + ' start'
 
+                            strData = strData + "\n"
                             self.clientSocket.send(strData.encode())
 
                 elif recvData[0] == 'C':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('C')
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 elif recvData[0] == 'D':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('D')
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 elif recvData[0] == 'E':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('E')
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 elif recvData[0] == 'F':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('F')
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 elif recvData[0] == 'G':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('G')
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 elif recvData[0] == 'A':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('A')
-                    self.clientSocket.send('OK'.encode())
+                    self.clientSocket.send('OK\n'.encode())
 
                 elif recvData[0] == 'B':
                     dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('B')
@@ -170,13 +176,15 @@ class ClientThread(threading.Thread):
                             for key in dictPlayer_lsKeys[self.strUsernameOpponent]:
                                 strData = key + " "
 
+                            strData = strData + "\n"
+
                             self.clientSocket.send(strData.encode())
 
                         else:
                             pass
 
                 else:
-                    self.clientSocket.send("Invalid message syntax!".encode())
+                    self.clientSocket.send("Invalid message syntax!\n".encode())
 
                     print(self.getName(), "Invalid message syntax!")
 
@@ -191,7 +199,6 @@ class Server(threading.Thread):
     def run(self):
         while True:
             serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             serverSocket.bind((TCP_IP, TCP_PORT))
 
             print(str(datetime.now()), 'Server started... waiting on port ' + str(TCP_PORT))
