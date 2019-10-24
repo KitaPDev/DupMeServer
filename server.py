@@ -10,10 +10,9 @@ TCP_PORT = 54321
 
 lsClientThreads = []
 lsPlayers = []
-dictPlayer_Opponent = {}
-dictPlayer_lsKeys = {}
-dictPlayer_StartFlag = {}
-
+lsPlayers_ready = []
+dictPlayer_key = {}
+dictPlayer_startBit = {}
 root = Tk()
 text = StringVar()
 
@@ -40,26 +39,7 @@ class ClientThread(threading.Thread):
 
             if len(recvData) == 0:
                 self.clientSocket.close()
-
-                if len(self.strUsername) > 0:
-                    if self.strUsername in lsPlayers:
-                        lsPlayers.remove(self.strUsername)
-
-                    if len(self.strUsernameOpponent) > 0:
-                        lsPlayers.remove(self.strUsernameOpponent)
-
-                        if self.strUsername in dictPlayer_Opponent.keys():
-                            self.strUsernameOpponent = dictPlayer_Opponent[self.strUsername]
-                            del dictPlayer_Opponent[self.strUsername]
-                            del dictPlayer_Opponent[self.strUsernameOpponent]
-
-                        if self.strUsername in dictPlayer_lsKeys.keys():
-                            del dictPlayer_lsKeys[self.strUsername]
-                            del dictPlayer_lsKeys[self.strUsernameOpponent]
-
-                        if self.strUsername in dictPlayer_StartFlag.keys():
-                            del dictPlayer_StartFlag[self.strUsername]
-
+                lsPlayers.remove(self.strUsername)
                 print(str(datetime.now()), 'Client closed:', self.clientAddress[0], ':', self.clientAddress[1])
                 break
 
@@ -68,7 +48,7 @@ class ClientThread(threading.Thread):
                 if len(recvData) == 1:
                     self.clientSocket.send('BAD\n'.encode())
 
-                if recvData[1] not in lsPlayers:
+                elif recvData[1] not in lsPlayers:
                     lsPlayers.append(recvData[1])
                     self.strUsername = recvData[1]
                     self.clientSocket.send('OK\n'.encode())
@@ -95,102 +75,88 @@ class ClientThread(threading.Thread):
                     if len(self.strUsernameOpponent) > 0:
                         lsPlayers.remove(self.strUsernameOpponent)
 
-                        if self.strUsername in dictPlayer_Opponent.keys():
-                            self.strUsernameOpponent = dictPlayer_Opponent[self.strUsername]
-                            del dictPlayer_Opponent[self.strUsername]
-                            del dictPlayer_Opponent[self.strUsernameOpponent]
+                        if self.strUsername in dictPlayer_key.keys():
+                            del dictPlayer_key[self.strUsername]
+                            del dictPlayer_key[self.strUsernameOpponent]
+                            del dictPlayer_startBit[self.strUsername]
+                            del dictPlayer_startBit[self.strUsernameOpponent]
 
-                        if self.strUsername in dictPlayer_lsKeys.keys():
-                            del dictPlayer_lsKeys[self.strUsername]
-                            del dictPlayer_lsKeys[self.strUsernameOpponent]
+                elif recvData[0] == 'find_match':
+                    while len(lsPlayers) < 2:
+                        pass
 
-                        if self.strUsername in dictPlayer_StartFlag.keys():
-                            del dictPlayer_StartFlag[self.strUsername]
+                    lsPlayers_temp = []
+                    for player in lsPlayers:
+                        lsPlayers_temp.append(player)
+                    lsPlayers_temp.remove(self.strUsername)
+                    random.shuffle(lsPlayers_temp)
 
-                if recvData[0] == 'find_match':
-                    startIndex = random.randint(0, 1)
+                    self.strUsernameOpponent = lsPlayers_temp[0]
+                    strData = self.strUsernameOpponent
 
-                    if len(lsPlayers) < 2:
-                        self.clientSocket.send('REQ_AGAIN\n'.encode())
+                    strData = strData + '\n'
+                    self.clientSocket.send(strData.encode())
+
+                elif recvData[0] == 'get_start_bit':
+                    if self.strUsernameOpponent in dictPlayer_startBit.keys():
+                        if dictPlayer_startBit[self.strUsernameOpponent] == 1:
+                            dictPlayer_startBit[self.strUsername] = 0
+
+                        else:
+                            dictPlayer_startBit[self.strUsername] = 1
 
                     else:
-                        if self.strUsername in dictPlayer_Opponent.keys():
-
-                            strData: str = dictPlayer_Opponent[self.strUsername]
-
-                            if startIndex == 0:
-                                strData = strData + ' start'
-                                dictPlayer_StartFlag[self.strUsername] = True
-
-                            strData = strData + "\n"
-                            self.clientSocket.send(strData.encode())
+                        if random.randint(0, 1) == 1:
+                            dictPlayer_startBit[self.strUsername] = 1
 
                         else:
-                            lsPlayers_inMatch = [dictPlayer_Opponent[player] for player in lsPlayers]
-                            lsPlayers_unmatched = lsPlayers
-                            lsPlayers_unmatched.remove(self.strUsername)
+                            dictPlayer_startBit[self.strUsername] = 0
 
-                            for player in lsPlayers_inMatch:
-                                lsPlayers_unmatched.remove(player)
+                    strData = str(dictPlayer_startBit[self.strUsername]) + '\n'
+                    self.clientSocket.send(strData.encode())
 
-                            self.strUsernameOpponent: str = lsPlayers_unmatched[
-                                random.randrange(0, len(lsPlayers_unmatched) - 1)]
-                            dictPlayer_Opponent[self.strUsername] = self.strUsernameOpponent
-                            dictPlayer_Opponent[self.strUsernameOpponent] = self.strUsername
-
-                            strData = self.strUsernameOpponent
-
-                            if startIndex == 1:
-                                strData = strData + ' start'
-                                dictPlayer_StartFlag[self.strUsername] = True
-
-                            strData = strData + "\n"
-                            self.clientSocket.send(strData.encode())
-
-                elif recvData[0] == 'C':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('C')
-                    self.clientSocket.send('OK\n'.encode())
-
-                elif recvData[0] == 'D':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('D')
-                    self.clientSocket.send('OK\n'.encode())
-
-                elif recvData[0] == 'E':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('E')
-                    self.clientSocket.send('OK\n'.encode())
-
-                elif recvData[0] == 'F':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('F')
-                    self.clientSocket.send('OK\n'.encode())
-
-                elif recvData[0] == 'G':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('G')
-                    self.clientSocket.send('OK\n'.encode())
-
-                elif recvData[0] == 'A':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('A')
-                    self.clientSocket.send('OK\n'.encode())
-
-                elif recvData[0] == 'B':
-                    dictPlayer_lsKeys[self.strUsername] = list(dictPlayer_lsKeys[self.strUsername]).append('B')
-                    self.clientSocket.send('OK'.encode())
-
-                elif recvData[0] == 'get_keys':
-                    self.strUsernameOpponent = dictPlayer_Opponent[self.strUsername]
+                elif recvData[0] == 'start_match':
+                    lsPlayers_ready.append(self.strUsername)
 
                     while True:
-                        if len(dictPlayer_lsKeys[self.strUsernameOpponent]) > 0:
-                            strData = ''
+                        if self.strUsernameOpponent in lsPlayers_ready:
+                            self.clientSocket.send('1\n'.encode())
 
-                            for key in dictPlayer_lsKeys[self.strUsernameOpponent]:
-                                strData = key + ' '
+                elif recvData[0] == 'C':
+                    dictPlayer_key[self.strUsername] = 'C'
 
-                            strData = strData + '\n'
+                elif recvData[0] == 'D':
+                    dictPlayer_key[self.strUsername] = 'D'
 
-                            self.clientSocket.send(strData.encode())
+                elif recvData[0] == 'E':
+                    dictPlayer_key[self.strUsername] = 'E'
 
-                        else:
-                            pass
+                elif recvData[0] == 'F':
+                    dictPlayer_key[self.strUsername] = 'F'
+
+                elif recvData[0] == 'G':
+                    dictPlayer_key[self.strUsername] = 'G'
+
+                elif recvData[0] == 'A':
+                    dictPlayer_key[self.strUsername] = 'A'
+
+                elif recvData[0] == 'B':
+                    dictPlayer_key[self.strUsername] = 'B'
+
+                elif recvData[0] == 'get_key':
+
+                    while True:
+                        if self.strUsernameOpponent in dictPlayer_key.keys():
+
+                            if len(dictPlayer_key[self.strUsernameOpponent]) > 0:
+                                strData = dictPlayer_key[self.strUsernameOpponent]
+
+                                strData = strData + '\n'
+
+                                self.clientSocket.send(strData.encode())
+
+                            else:
+                                pass
 
                 else:
                     self.clientSocket.send("Invalid message syntax!\n".encode())
@@ -240,7 +206,8 @@ def updateLabel():
 
         for t in threading.enumerate():
             if 'ClientThread' in t.getName():
-                lsClientThreads.append(t)
+                if t not in lsClientThreads:
+                    lsClientThreads.append(t)
 
         text.set('Concurrent Clients: ' + str(len(lsClientThreads)))
         time.sleep(0.1)

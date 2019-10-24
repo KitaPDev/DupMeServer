@@ -15,7 +15,7 @@
     <SUITE FILE_PATH="coverage/server$testClient.coverage" NAME="test_client Coverage Results" MODIFIED="1570984581727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/server$client_thread.coverage" NAME="client_thread Coverage Results" MODIFIED="1571284278782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/server$Server.coverage" NAME="server Coverage Results" MODIFIED="1570984579926" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/server$server.coverage" NAME="server Coverage Results" MODIFIED="1571886606484" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
+    <SUITE FILE_PATH="coverage/server$server.coverage" NAME="server Coverage Results" MODIFIED="1571959991133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
     <SUITE FILE_PATH="coverage/server$test_client.coverage" NAME="test_client Coverage Results" MODIFIED="1571886599354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
   </component>
   <component name="DatabaseView">
@@ -36,22 +36,22 @@
     <session id="-819363116">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="23" />
+          <entry key="project.closed" value="25" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.12" value="1" />
-          <entry key="project.open.time.5" value="5" />
+          <entry key="project.open.time.12" value="2" />
+          <entry key="project.open.time.5" value="6" />
           <entry key="project.open.time.6" value="6" />
           <entry key="project.open.time.7" value="6" />
           <entry key="project.open.time.8" value="3" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="24" />
+          <entry key="project.opened" value="26" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="Procfile" value="3" />
-          <entry key="py" value="71" />
+          <entry key="py" value="75" />
           <entry key="pyi" value="6" />
           <entry key="txt" value="2" />
         </counts>
@@ -59,7 +59,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="71" />
+          <entry key="Python" value="75" />
           <entry key="PythonStub" value="6" />
         </counts>
       </usages-collector>
@@ -67,14 +67,14 @@
         <counts>
           <entry key="Procfile" value="6" />
           <entry key="dummy" value="288" />
-          <entry key="py" value="28068" />
+          <entry key="py" value="30732" />
           <entry key="txt" value="70" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="364" />
-          <entry key="Python" value="28068" />
+          <entry key="Python" value="30732" />
         </counts>
       </usages-collector>
     </session>
@@ -84,15 +84,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="172" column="77" lean-forward="true" selection-start-line="172" selection-start-column="77" selection-end-line="172" selection-end-column="77" />
+            <state relative-caret-position="289">
+              <caret line="122" column="66" selection-start-line="122" selection-start-column="66" selection-end-line="122" selection-end-column="66" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1571908198819" expanded="true" signature="396:397" ph="..." />
-                <marker date="1571908198819" expanded="true" signature="396:402" ph="..." />
-                <marker date="1571908198819" expanded="true" signature="8063:9640" ph="..." />
-                <marker date="1571908198819" expanded="true" signature="8087:8096" ph="..." />
-                <marker date="1571908198819" expanded="true" signature="8980:8983" ph="..." />
+                <marker date="1571960493092" expanded="true" signature="387:388" ph="..." />
+                <marker date="1571960493092" expanded="true" signature="387:393" ph="..." />
+                <marker date="1571960493092" expanded="true" signature="5770:7396" ph="..." />
+                <marker date="1571960493092" expanded="true" signature="5794:5803" ph="..." />
+                <marker date="1571960493092" expanded="true" signature="6687:6690" ph="..." />
+                <marker date="1571960493092" expanded="true" signature="7069:7071" ph="..." />
               </folding>
             </state>
           </provider>
@@ -136,9 +137,11 @@
       <find>send</find>
       <find>start</find>
       <find>remove</find>
+      <find>dictPlayer_lsKeys</find>
     </findStrings>
     <replaceStrings>
       <replace>self.strUsernameOpponent</replace>
+      <replace>dictPlayer_key</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -177,9 +180,23 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="572" />
-    <option name="width" value="1348" />
+    <option name="x" value="115" />
+    <option name="width" value="1343" />
     <option name="height" value="1039" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Angular</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -212,7 +229,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/test/testClient.py" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -233,7 +250,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test_client">
+  <component name="RunManager" selected="Python.server">
     <configuration name="server" type="PythonConfigurationType" factoryName="Python">
       <module name="server" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -315,7 +332,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571888425483</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="edit server.py">
+      <created>1571911517179</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1571911517179</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -328,16 +352,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="458" y="0" width="1078" height="831" extended-state="0" />
+    <frame x="92" y="0" width="1074" height="831" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19842829" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.2857143" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291829" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3503546" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.32843792" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.32664755" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32946146" />
@@ -384,6 +408,7 @@
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="recvData" />
+        <watch expression="self._is_stopped" />
       </configuration>
     </watches-manager>
   </component>
@@ -513,22 +538,23 @@
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/threading.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
+        <state relative-caret-position="140">
           <caret line="916" selection-start-line="916" selection-end-line="916" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="172" column="77" lean-forward="true" selection-start-line="172" selection-start-column="77" selection-end-line="172" selection-end-column="77" />
+        <state relative-caret-position="289">
+          <caret line="122" column="66" selection-start-line="122" selection-start-column="66" selection-end-line="122" selection-end-column="66" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1571908198819" expanded="true" signature="396:397" ph="..." />
-            <marker date="1571908198819" expanded="true" signature="396:402" ph="..." />
-            <marker date="1571908198819" expanded="true" signature="8063:9640" ph="..." />
-            <marker date="1571908198819" expanded="true" signature="8087:8096" ph="..." />
-            <marker date="1571908198819" expanded="true" signature="8980:8983" ph="..." />
+            <marker date="1571960493092" expanded="true" signature="387:388" ph="..." />
+            <marker date="1571960493092" expanded="true" signature="387:393" ph="..." />
+            <marker date="1571960493092" expanded="true" signature="5770:7396" ph="..." />
+            <marker date="1571960493092" expanded="true" signature="5794:5803" ph="..." />
+            <marker date="1571960493092" expanded="true" signature="6687:6690" ph="..." />
+            <marker date="1571960493092" expanded="true" signature="7069:7071" ph="..." />
           </folding>
         </state>
       </provider>
