@@ -147,10 +147,11 @@ class ClientThread(threading.Thread):
 
                     if len(lsKeys) > 0:
                         strData = lsKeys[0]
-                        lsKeys.pop()
 
-                        for key in lsKeys:
+                        for key in lsKeys[1:]:
                             strData = strData + ' ' + key
+
+                        lsKeys.clear()
 
                         strData = strData + '\n'
 
