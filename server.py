@@ -11,7 +11,7 @@ TCP_PORT = 54321
 lsClientThreads = []
 lsPlayers = []
 lsPlayers_ready = []
-dictPlayer_key = {}
+lsKeys = []
 dictPlayer_startBit = {}
 root = Tk()
 text = StringVar()
@@ -30,16 +30,6 @@ class ClientThread(threading.Thread):
     def run(self):
 
         while True:
-            if self.strUsernameOpponent in dictPlayer_key.keys():
-
-                if len(dictPlayer_key[self.strUsernameOpponent]) > 0:
-                    strData = dictPlayer_key[self.strUsernameOpponent]
-
-                    strData = strData + '\n'
-
-                    self.clientSocket.send(strData.encode())
-                    dictPlayer_key[self.strUsernameOpponent] = ''
-
             recvData = self.clientSocket.recv(1024).decode()
             recvData = recvData.split()
 
@@ -86,9 +76,7 @@ class ClientThread(threading.Thread):
                     if len(self.strUsernameOpponent) > 0:
                         lsPlayers.remove(self.strUsernameOpponent)
 
-                        if self.strUsername in dictPlayer_key.keys():
-                            del dictPlayer_key[self.strUsername]
-                            del dictPlayer_key[self.strUsernameOpponent]
+                        if self.strUsername in dictPlayer_startBit.keys():
                             del dictPlayer_startBit[self.strUsername]
                             del dictPlayer_startBit[self.strUsernameOpponent]
 
@@ -135,25 +123,39 @@ class ClientThread(threading.Thread):
                     self.clientSocket.send('1\n'.encode())
 
                 elif recvData[0] == 'C':
-                    dictPlayer_key[self.strUsername] = 'C'
+                    lsKeys.append('C')
 
                 elif recvData[0] == 'D':
-                    dictPlayer_key[self.strUsername] = 'D'
+                    lsKeys.append('D')
 
                 elif recvData[0] == 'E':
-                    dictPlayer_key[self.strUsername] = 'E'
+                    lsKeys.append('E')
 
                 elif recvData[0] == 'F':
-                    dictPlayer_key[self.strUsername] = 'F'
+                    lsKeys.append('F')
 
                 elif recvData[0] == 'G':
-                    dictPlayer_key[self.strUsername] = 'G'
+                    lsKeys.append('G')
 
                 elif recvData[0] == 'A':
-                    dictPlayer_key[self.strUsername] = 'A'
+                    lsKeys.append('A')
 
                 elif recvData[0] == 'B':
-                    dictPlayer_key[self.strUsername] = 'B'
+                    lsKeys.append('B')
+
+                elif recvData[0] == 'get_keys':
+
+                    if len(lsKeys) > 0:
+                        strData = lsKeys[0]
+                        lsKeys.remove(0)
+
+                        for key in lsKeys:
+                            strData = strData + ' key'
+
+                        strData = strData + '\n'
+
+                        self.clientSocket.send(strData.encode())
+                        print(self.getName(), "Sent Data", strData)
 
                 else:
                     self.clientSocket.send("Invalid message syntax!\n".encode())
