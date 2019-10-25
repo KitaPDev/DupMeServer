@@ -119,10 +119,10 @@ class ClientThread(threading.Thread):
                 elif recvData[0] == 'ready':
                     lsPlayers_ready.append(self.strUsername)
 
-                    while True:
-                        if self.strUsernameOpponent in lsPlayers_ready:
-                            self.clientSocket.send('1\n'.encode())
-                            break
+                    while self.strUsernameOpponent not in lsPlayers_ready:
+                        pass
+
+                    self.clientSocket.send('1\n'.encode())
 
                 elif recvData[0] == 'C':
                     dictPlayer_key[self.strUsername] = 'C'
