@@ -30,6 +30,16 @@ class ClientThread(threading.Thread):
     def run(self):
 
         while True:
+            if self.strUsernameOpponent in dictPlayer_key.keys():
+
+                if len(dictPlayer_key[self.strUsernameOpponent]) > 0:
+                    strData = dictPlayer_key[self.strUsernameOpponent]
+
+                    strData = strData + '\n'
+
+                    self.clientSocket.send(strData.encode())
+                    dictPlayer_key[self.strUsernameOpponent] = ''
+
             recvData = self.clientSocket.recv(1024).decode()
             recvData = recvData.split()
 
@@ -144,16 +154,6 @@ class ClientThread(threading.Thread):
 
                 elif recvData[0] == 'B':
                     dictPlayer_key[self.strUsername] = 'B'
-
-                elif recvData[0] == 'get_key':
-                    if self.strUsernameOpponent in dictPlayer_key.keys():
-
-                        if len(dictPlayer_key[self.strUsernameOpponent]) > 0:
-                            strData = dictPlayer_key[self.strUsernameOpponent]
-
-                            strData = strData + '\n'
-
-                            self.clientSocket.send(strData.encode())
 
                 else:
                     self.clientSocket.send("Invalid message syntax!\n".encode())
